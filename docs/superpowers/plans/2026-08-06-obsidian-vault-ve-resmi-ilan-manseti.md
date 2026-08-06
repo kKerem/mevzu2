@@ -1316,6 +1316,15 @@ Beklenen: `TUM TESTLER GECTI`.
 
 **DUR:** Bu adım başarısızsa **push yapma.** Depo public; sır bir kez push edilirse git geçmişinden temizlense bile GitHub önbelleğinde ve fork'larda kalır.
 
+**Uygulama sırasında öğrenilen — kapının iki kusuru vardı:**
+
+1. **Yalnızca çalışma ağacına bakıyordu.** Sırlar `functions.php`, `class-license.php`, `page-nobetci-eczaneler.php` ve `docs/` altındaki spec/plan dosyaları aracılığıyla **her commit'e** girmişti. Çalışma ağacı temizlendikten sonra kapı GEÇİYOR ama geçmiş hâlâ kirliydi — push sırları sızdırırdı. Kapı artık `git rev-list --all` üzerinden **geçmişi de** tarar.
+2. **Sırları kendi içinde taşıyordu.** Tespit deseni gerçek anahtar değerlerinden oluşuyordu; dosya git'te takipli olduğu için testin kendisi bir sızıntı kaynağıydı. Kapı artık aranacak değerleri git dışı `inc/config-keys.php`'den türetir ve hiçbir sır değerini kendi içinde barındırmaz.
+
+Ek olarak, türetme bozulduğunda testin sessizce geçmemesi için üç koruma eklendi: PHP hata çıktısı yakalanır, en az 7 sır türetilmiş olması şart koşulur, boşluk içeren satır (hata mesajı belirtisi) reddedilir. İlk yazımda `array_walk_recursive((array) $k, …)` PHP fatal error veriyordu ve test **boş listeyle yanlışlıkla GEÇİYORDU**.
+
+**Bu depoda geçmiş 2026-08-07'de tek temiz commit'e sıkıştırıldı** (`git checkout --orphan` + `reflog expire` + `gc --prune=now`). Depo hiç push edilmemişti, sızıntı gerçekleşmedi.
+
 - [ ] **Adım 2: Uzak depoyu bağla ve geçmişini al**
 
 ```bash

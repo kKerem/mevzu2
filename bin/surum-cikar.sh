@@ -56,6 +56,7 @@ STAGE="$(mktemp -d)"
 rsync -a --exclude '.git' --exclude 'docs' --exclude 'graphify-out' \
       --exclude 'mevzu2-wp' --exclude 'node_modules' --exclude 'tests' \
       --exclude 'bin' --exclude 'dist' --exclude '.claude' \
+      --exclude '.superpowers' --exclude '.gitignore' \
       --exclude '*.psd' --exclude '*.zip' --exclude '.DS_Store' \
       ./ "$STAGE/mevzu2/"
 cp inc/config-keys.php "$STAGE/mevzu2/inc/config-keys.php"
@@ -63,8 +64,12 @@ cp inc/config-keys.php "$STAGE/mevzu2/inc/config-keys.php"
 rm -rf "$STAGE"
 
 echo "== 6/7 Paket doğrulanıyor =="
-unzip -l "$ZIP" | grep -qE "mevzu2/(docs|graphify-out|mevzu2-wp|tests)/" \
-  && { echo "HATA: zip'te olmaması gereken klasör var." >&2; exit 1; }
+YASAK="$(unzip -l "$ZIP" | grep -oE "mevzu2/(docs|graphify-out|mevzu2-wp|tests|bin|\.superpowers|\.claude|\.git)/" | sort -u)"
+if [ -n "$YASAK" ]; then
+  echo "HATA: zip'te olmaması gereken klasör(ler) var:" >&2
+  printf '%s\n' "$YASAK" | sed 's/^/    /' >&2
+  exit 1
+fi
 unzip -l "$ZIP" | grep -q "mevzu2/inc/config-keys.php" \
   || { echo "HATA: zip'te config-keys.php yok." >&2; exit 1; }
 echo "Paket hazır: $ZIP ($(du -h "$ZIP" | cut -f1))"
