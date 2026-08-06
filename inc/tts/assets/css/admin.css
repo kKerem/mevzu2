@@ -1,0 +1,85 @@
+/* Admin Panel CSS */
+.kkerem-tts-test-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.kkerem-tts-test-section h3 {
+    margin-top: 0;
+}
+
+#test-text {
+    width: 100%;
+    max-width: 500px;
+}
+
+#test-audio-container {
+    margin-top: 15px;
+}
+
+#test-audio-container audio {
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Range slider değerleri */
+input[type="range"] {
+    width: 200px;
+    margin-right: 10px;
+}
+
+#speaking-rate-value,
+#pitch-value {
+    font-weight: bold;
+    color: #0073aa;
+}
+
+/* Meta box stilleri */
+#kkerem-tts-meta-box {
+    padding: 10px 0;
+}
+
+.kkerem-tts-audio-info h4 {
+    margin-top: 0;
+    color: #0073aa;
+}
+
+.kkerem-tts-audio-info audio {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.kkerem-tts-no-audio {
+    text-align: center;
+    padding: 20px;
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+#kkerem-tts-loading {
+    text-align: center;
+    padding: 20px;
+}
+
+#kkerem-tts-error {
+    background: #fbeaea;
+    border: 1px solid #dc3232;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#kkerem-tts-error p {
+    margin: 0;
+    color: #dc3232;
+}
+
+/* Spinner */
+.spinner.is-active {
+    visibility: visible;
+    float: none;
+    margin: 0 auto;
+}

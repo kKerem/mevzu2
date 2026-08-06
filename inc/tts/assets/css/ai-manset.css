@@ -1,0 +1,638 @@
+/**
+ * Yapay Zeka Manşeti — Swiper, şarkı sözü senkronu, robot animasyonu.
+ * Renk / buton / tipografi: Bootstrap + :root (--mevzu-*).
+ */
+.yzm-modal {
+    --yzm-black-rgb: 0, 0, 0;
+    --yzm-white-rgb: 255, 255, 255;
+    --yzm-scrim: rgba(var(--yzm-black-rgb), 0.55);
+    --yzm-scrim-strong: rgba(var(--yzm-black-rgb), 0.92);
+    --yzm-lyric-muted: rgba(var(--yzm-white-rgb), 0.32);
+    --yzm-lyric-past: rgba(var(--yzm-white-rgb), 0.42);
+    --yzm-lyric-future: rgba(var(--yzm-white-rgb), 0.28);
+    --yzm-lyric-active: var(--mevzu-white);
+    --yzm-loading-bg: rgba(var(--mevzu-dark-rgb), 0.92);
+    --yzm-controls-height: 7.5rem;
+    --yzm-header-height: 3.25rem;
+}
+
+/* Çubuk — sürekli doğrusal gradient döngüsü */
+.yzm-bar-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.yzm-bar {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: none !important;
+    padding: 0.85rem 1rem !important;
+    min-height: 3.5rem;
+    color: var(--mevzu-white, #fff) !important;
+    background: #1a1a1d !important;
+    box-shadow: 0 3px 12px rgba(var(--mevzu-black-rgb, 0, 0, 0), 0.14) !important;
+    transition: background-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.yzm-bar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(
+        90deg,
+        #1a1a1d 0%,
+        #252528 22%,
+        rgba(var(--mevzu-primary-rgb, 233, 8, 8), 0.38) 50%,
+        #252528 78%,
+        #1a1a1d 100%
+    );
+    background-size: 200% 100%;
+    animation: yzm-bar-loop 7s linear infinite;
+    pointer-events: none;
+    transition: filter 0.35s ease, opacity 0.35s ease;
+}
+
+.yzm-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(var(--mevzu-primary-rgb, 233, 8, 8), 0.08) 0%,
+        rgba(var(--mevzu-primary-rgb, 233, 8, 8), 0.35) 50%,
+        rgba(var(--mevzu-primary-rgb, 233, 8, 8), 0.08) 100%
+    );
+    background-size: 200% 100%;
+    animation: yzm-bar-loop 7s linear infinite;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+
+.yzm-bar:hover {
+    background: #232327 !important;
+    box-shadow: 0 4px 16px rgba(var(--mevzu-primary-rgb, 233, 8, 8), 0.22) !important;
+}
+
+.yzm-bar:hover::before {
+    filter: brightness(1.1) saturate(1.2);
+}
+
+.yzm-bar:hover::after {
+    opacity: 1;
+}
+
+.yzm-bar > * {
+    position: relative;
+    z-index: 1;
+}
+
+.yzm-bar:focus-visible {
+    outline: 2px solid var(--mevzu-primary);
+    outline-offset: 2px;
+}
+
+@keyframes yzm-bar-loop {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+.yzm-bar-icon {
+    width: 44px;
+    height: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .yzm-bar::before,
+    .yzm-bar::after {
+        animation: none;
+        background-size: 100% 100%;
+    }
+
+    .yzm-bar::before {
+        background: linear-gradient(90deg, #1a1a1d, #252528, #1a1a1d) !important;
+    }
+
+    .yzm-bar::after {
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(var(--mevzu-primary-rgb, 233, 8, 8), 0.3),
+            transparent
+        ) !important;
+    }
+}
+
+/* Konuşma balonu kuyruğu */
+.yzm-speech-bubble {
+    position: relative;
+    border-radius: 14px 14px 14px 4px;
+}
+
+.yzm-speech-bubble::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    bottom: 14px;
+    width: 12px;
+    height: 12px;
+    background: var(--mevzu-white);
+    transform: rotate(45deg);
+    box-shadow: -2px 2px 4px rgba(var(--mevzu-black-rgb), 0.06);
+}
+
+.yzm-robot-avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 26px;
+}
+
+.yzm-robot-bubble--welcome .yzm-robot-avatar,
+.yzm-robot-bubble--outro .yzm-robot-avatar {
+    width: 56px;
+    height: 56px;
+    font-size: 30px;
+}
+
+.yzm-robot-bubble--outro .yzm-speech-bubble {
+    background: linear-gradient(135deg, var(--mevzu-white) 0%, var(--mevzu-light) 100%);
+}
+
+/* Swiper (tema .swiper-slide override) */
+.yzm-swiper-wrap {
+    position: relative;
+    isolation: isolate;
+}
+
+/* Başlık — thumbnail üstünde (Swiper z-index üstüne) */
+.yzm-modal-header {
+    z-index: 40;
+    pointer-events: none;
+    min-height: var(--yzm-header-height);
+    background: linear-gradient(
+        180deg,
+        rgba(var(--yzm-black-rgb), 0.92) 0%,
+        rgba(var(--yzm-black-rgb), 0.55) 65%,
+        rgba(var(--yzm-black-rgb), 0) 100%
+    );
+}
+
+.yzm-modal-header .yzm-modal-title,
+.yzm-modal-header .btn-close {
+    pointer-events: auto;
+}
+
+/* Kontroller — slayt / thumbnail üstünde */
+.yzm-controls {
+    z-index: 30;
+    pointer-events: none;
+    background: linear-gradient(
+        180deg,
+        rgba(var(--yzm-black-rgb), 0) 0%,
+        rgba(var(--yzm-black-rgb), 0.55) 35%,
+        rgba(var(--yzm-black-rgb), 0.92) 100%
+    );
+}
+
+.yzm-controls .yzm-progress-dots,
+.yzm-controls .yzm-control-row,
+.yzm-controls .yzm-btn-nav,
+.yzm-controls .yzm-robot-player-wrap,
+.yzm-controls .yzm-robot-player {
+    pointer-events: auto;
+}
+
+.yzm-btn-nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 auto;
+    max-width: 7.5rem;
+    min-width: 5.5rem;
+    border: none;
+    border-radius: var(--mevzu-border-radius, 8px);
+    padding: 10px 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: background 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.yzm-btn-nav:hover:not(:disabled) {
+    background: var(--mevzu-primary) !important;
+    color: var(--mevzu-white);
+}
+
+.yzm-btn-nav:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.yzm-modal-loading {
+    z-index: 50;
+    background: var(--yzm-loading-bg);
+}
+
+.yzm-swiper-wrap--loading .yzm-swiper {
+    pointer-events: none;
+    opacity: 0.35;
+}
+
+.yzm-modal .yzm-swiper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: clamp(220px, 42vw, 500px) !important;
+    background: var(--mevzu-gray-900);
+    overflow: hidden;
+}
+
+.yzm-modal .yzm-swiper--creative {
+    perspective: 1200px;
+}
+
+.yzm-modal .yzm-swiper .swiper-wrapper {
+    height: 100% !important;
+}
+
+.yzm-modal .yzm-swiper .swiper-slide {
+    position: relative !important;
+    height: 100% !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    border-radius: var(--mevzu-border-radius-lg, 16px);
+    box-shadow: 0 14px 36px rgba(var(--mevzu-black-rgb), 0.45);
+    transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.yzm-modal .yzm-swiper .swiper-slide-active {
+    box-shadow: 0 18px 48px rgba(var(--yzm-black-rgb), 0.55);
+    z-index: 2 !important;
+}
+
+.yzm-modal .yzm-swiper .swiper-slide:not(.swiper-slide-active) {
+    pointer-events: none;
+}
+
+.yzm-slide-media--yzm {
+    background-color: var(--mevzu-gray-900);
+    background-image: linear-gradient(
+        145deg,
+        rgba(var(--mevzu-primary-rgb), 0.22) 0%,
+        rgba(var(--yzm-black-rgb), 0.55) 45%,
+        var(--mevzu-gray-dark) 100%
+    );
+}
+
+/* Lyrics slaytı (haber / karşılama / kapanış) */
+.yzm-slide--news,
+.yzm-slide--welcome,
+.yzm-slide--outro {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.yzm-slide-toolbar > *,
+.yzm-slide-ribbon > * {
+    pointer-events: auto;
+}
+
+.yzm-slide--news .yzm-slide-toolbar {
+    top: var(--yzm-header-height);
+}
+
+.yzm-slide-ribbon {
+    top: calc(var(--yzm-header-height) + 2.75rem);
+    pointer-events: none;
+}
+
+.yzm-slide-goto:hover {
+    background-color: var(--mevzu-primary) !important;
+    border-color: var(--mevzu-primary) !important;
+    color: var(--mevzu-white) !important;
+}
+
+.yzm-slide-scrim--lyrics {
+    background: linear-gradient(
+        180deg,
+        rgba(var(--mevzu-black-rgb), 0.72) 0%,
+        rgba(var(--mevzu-black-rgb), 0.82) 40%,
+        rgba(var(--mevzu-black-rgb), 0.94) 100%
+    ) !important;
+}
+
+.yzm-slide-lyrics-wrap {
+    position: absolute;
+    inset: calc(var(--yzm-header-height) + 3.25rem) 0 var(--yzm-controls-height) 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 0 1.1rem;
+    pointer-events: none;
+}
+
+.yzm-slide-headline {
+    flex-shrink: 0;
+    color: rgba(var(--mevzu-white-rgb), 0.55);
+    transition: color 0.35s ease;
+}
+
+.yzm-slide--news.yzm-slide--lyrics-active .yzm-slide-headline,
+.yzm-slide--welcome.yzm-slide--lyrics-active .yzm-slide-headline,
+.yzm-slide--outro.yzm-slide--lyrics-active .yzm-slide-headline {
+    color: rgba(var(--yzm-white-rgb), 0.7);
+}
+
+.yzm-lyrics {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    pointer-events: auto;
+    -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(
+        180deg,
+        transparent 0%,
+        #000 12%,
+        #000 88%,
+        transparent 100%
+    );
+}
+
+.yzm-lyric-line {
+    margin: 0;
+    padding: 0.2em 0;
+    color: var(--yzm-lyric-muted);
+    font-size: clamp(1.05rem, 3.2vw, 1.2rem);
+    font-weight: 800;
+    line-height: 1.38;
+    letter-spacing: -0.02em;
+    transition: color 0.28s ease, opacity 0.28s ease, transform 0.35s ease;
+    transform-origin: left center;
+    transform: scale(0.95);
+}
+
+.yzm-lyric-line--past {
+    color: var(--yzm-lyric-past);
+}
+
+.yzm-lyric-line--active {
+    color: var(--yzm-lyric-active);
+    opacity: 1;
+    transform: scale(1.01);
+    text-shadow: 0 0 .25rem rgba(var(--mevzu-white-rgb), 0.35);
+}
+
+.yzm-lyric-line--future {
+    color: var(--yzm-lyric-future);
+}
+
+.yzm-slide-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-color: var(--mevzu-gray-900);
+    background-size: cover;
+    background-position: center;
+}
+
+.yzm-slide-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+        180deg,
+        rgba(var(--mevzu-black-rgb), 0.35) 0%,
+        rgba(var(--mevzu-black-rgb), 0.05) 35%,
+        var(--yzm-scrim) 72%,
+        var(--yzm-scrim-strong) 100%
+    );
+    pointer-events: none;
+}
+
+/* İlerleme noktaları */
+.yzm-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--mevzu-border-radius-circle, 50%);
+    background: rgba(var(--mevzu-white-rgb), 0.25);
+    transition: background 0.2s;
+}
+
+.yzm-dot.active {
+    background: var(--mevzu-primary);
+}
+
+/* Robot oynatıcı — play / dalga = ağız */
+.yzm-robot-player-wrap {
+    flex-shrink: 0;
+    padding: 0 4px;
+}
+
+.yzm-robot-player {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.yzm-robot-player:focus-visible {
+    outline: 2px solid var(--mevzu-primary);
+    outline-offset: 4px;
+    border-radius: 50%;
+}
+
+.yzm-robot-player__face {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    border-radius: var(--mevzu-border-radius-circle, 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--mevzu-primary);
+    box-shadow: 0 4px 18px rgba(var(--yzm-black-rgb), 0.45), inset 0 1px 0 rgba(var(--yzm-white-rgb), 0.12);
+    transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+/* İkon + ağız aynı kutu — dalga/play ikonun ağzında */
+.yzm-robot-player__glyph {
+    position: relative;
+    display: inline-block;
+    font-size: 42px;
+    line-height: 1;
+    color: var(--mevzu-dark);
+    filter: drop-shadow(0 0 8px rgba(var(--mevzu-primary-rgb), 0.4));
+    pointer-events: none;
+}
+
+.yzm-robot-player__glyph > i {
+    display: block;
+}
+
+.yzm-robot-player__mouth {
+    position: absolute;
+    left: 50%;
+    top: 58%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 20px;
+    height: 13px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 1px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+}
+
+/* İkonun çizilmiş ağzını kapatıp dalga/play göster */
+.yzm-robot-player__mouth::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 26px;
+    height: 22px;
+    transform: translate(-50%, -50%);
+    background: var(--mevzu-dark);
+    border-radius: 2px;
+    z-index: -1;
+    opacity: 1;
+}
+
+.yzm-robot-player:hover .yzm-robot-player__face {
+    transform: scale(1.04);
+}
+
+.yzm-robot-player--speaking .yzm-robot-player__face {
+    transform: scale(1.02);
+    box-shadow:
+        0 4px 22px rgba(var(--mevzu-primary-rgb), 0.35),
+        0 0 0 3px rgba(var(--mevzu-primary-rgb), 0.15),
+        inset 0 1px 0 rgba(var(--yzm-white-rgb), 0.14);
+}
+
+.yzm-robot-player__idle {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mevzu-primary);
+    font-size: 15px;
+    line-height: 1;
+}
+
+.yzm-robot-player__idle i {
+    margin-left: 1px;
+}
+
+.yzm-robot-player__bars {
+    position: relative;
+    z-index: 1;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 1px;
+    width: 20px;
+    height: 10px;
+}
+
+.yzm-robot-bar {
+    display: block;
+    width: 2px;
+    height: 100%;
+    border-radius: 3px;
+    background: var(--mevzu-primary);
+    transform-origin: center bottom;
+    opacity: 0.92;
+    box-shadow: 0 0 6px rgba(var(--mevzu-primary-rgb), 0.45);
+}
+
+.yzm-robot-player--speaking .yzm-robot-player__idle {
+    display: none;
+}
+
+.yzm-robot-player--speaking .yzm-robot-player__bars {
+    display: inline-flex;
+}
+
+.yzm-robot-player--speaking .yzm-robot-bar:nth-child(1) {
+    animation: yzm-robot-mouth-outer 1.18s ease-in-out -0.2s infinite;
+}
+
+.yzm-robot-player--speaking .yzm-robot-bar:nth-child(2) {
+    animation: yzm-robot-mouth-mid 1.02s ease-in-out -0.35s infinite;
+}
+
+.yzm-robot-player--speaking .yzm-robot-bar:nth-child(3) {
+    animation: yzm-robot-mouth-center 0.92s ease-in-out -0.12s infinite;
+}
+
+.yzm-robot-player--speaking .yzm-robot-bar:nth-child(4) {
+    animation: yzm-robot-mouth-mid 1.06s ease-in-out -0.48s infinite;
+}
+
+.yzm-robot-player--speaking .yzm-robot-bar:nth-child(5) {
+    animation: yzm-robot-mouth-outer 1.22s ease-in-out -0.28s infinite;
+}
+
+@keyframes yzm-robot-mouth-outer {
+    0%, 100% { transform: scaleY(0.22); }
+    48% { transform: scaleY(0.5); }
+    74% { transform: scaleY(0.62); }
+}
+
+@keyframes yzm-robot-mouth-mid {
+    0%, 100% { transform: scaleY(0.45); }
+    48% { transform: scaleY(0.38); }
+    74% { transform: scaleY(0.85); }
+}
+
+@keyframes yzm-robot-mouth-center {
+    0%, 100% { transform: scaleY(0.75); }
+    48% { transform: scaleY(0.48); }
+    74% { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .yzm-robot-player--speaking .yzm-robot-bar {
+        animation: none;
+        transform: scaleY(0.55);
+    }
+    .yzm-robot-player--speaking .yzm-robot-bar:nth-child(3) {
+        transform: scaleY(0.8);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .yzm-robot-bubble--bar .yzm-speech-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}

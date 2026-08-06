@@ -1,0 +1,60 @@
+/* Gutenberg CSS */
+.kkerem-tts-gutenberg-panel {
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    margin: 16px 0;
+}
+
+.kkerem-tts-gutenberg-panel h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: #1e1e1e;
+}
+
+.kkerem-tts-gutenberg-audio {
+    width: 100%;
+    margin: 12px 0;
+}
+
+.kkerem-tts-gutenberg-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #ddd;
+    font-size: 12px;
+    color: #666;
+}
+
+.kkerem-tts-gutenberg-buttons {
+    margin-top: 16px;
+}
+
+.kkerem-tts-gutenberg-buttons .components-button {
+    margin-right: 8px;
+}
+
+.kkerem-tts-gutenberg-loading {
+    text-align: center;
+    padding: 20px;
+}
+
+.kkerem-tts-gutenberg-error {
+    background: #fbeaea;
+    border: 1px solid #dc3232;
+    border-radius: 4px;
+    padding: 12px;
+    margin-top: 12px;
+    color: #dc3232;
+}
+
+.kkerem-tts-gutenberg-success {
+    background: #eafaea;
+    border: 1px solid #46b450;
+    border-radius: 4px;
+    padding: 12px;
+    margin-top: 12px;
+    color: #46b450;
+}

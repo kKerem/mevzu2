@@ -1,0 +1,32 @@
+# --- Sistem ---
+.DS_Store
+Untitled
+
+# --- Bağımlılıklar ---
+node_modules/
+vendor/
+package-lock.json
+composer.lock
+
+# --- Sırlar (asla commit edilmez) ---
+inc/config-keys.php
+
+# --- Üretilmiş / büyük dosyalar ---
+graphify-out/cache/
+graphify-out/graph.json
+graphify-out/graph.html
+*.psd
+*.zip
+*.sql
+style.css.map
+
+# --- Obsidian kişisel arayüz durumu ---
+# Vault'un kendisi depoya DAHİLDİR; yalnızca kişisel pencere durumu hariç.
+mevzu2-wp/.obsidian/workspace.json
+mevzu2-wp/.obsidian/workspace-mobile.json
+
+# --- Ajan çalışma alanı ---
+.superpowers/
+
+# --- Yayın çıktıları ---
+dist/

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="0 0 200 200" width="50px" height="50px">
+    <defs>
+        <clipPath id="_clipPath_Xjtu7ZqlGix9gvfjKifGyyf5SxoQW6hj">
+            <rect width="200" height="200"/>
+        </clipPath>
+    </defs>
+    <g clip-path="url(#_clipPath_Xjtu7ZqlGix9gvfjKifGyyf5SxoQW6hj)" stroke="#ffffff05">
+        <line x1="100" y1="143" x2="100" y2="200" vector-effect="non-scaling-stroke" stroke-width="0.75" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+        <line x1="100" y1="0" x2="100" y2="57" vector-effect="non-scaling-stroke" stroke-width="0.75" stroke-linejoin="round" stroke-linecap="square" stroke-miterlimit="3"/>
+        <line x1="57" y1="100" x2="0" y2="100" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="miter" stroke-linecap="round" stroke-miterlimit="3"/>
+        <line x1="143" y1="100" x2="200" y2="100" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+        <path stroke="#ffffff05" d=" M 157.502 200 L 42.676 200 L 30.144 187.524 L 29.997 169.856 L 12.475 169.856 L 0 157.324 L 12.475 169.856 L 30.144 169.856 L 30.144 187.524 L 42.676 200 L 30.144 187.524 L 30.144 169.856 L 12.475 169.856 L 0.017 157.324 L 0.017 42.619 L 12.475 30.144 L 29.997 30.144 L 29.997 12.475 L 42.676 0 L 157.502 0 L 169.855 12.475 L 169.855 30.194 L 187.525 30.194 L 200 42.619 L 200 157.324 L 187.523 169.856 L 169.855 169.856 L 169.855 187.524 L 157.502 200 L 42.676 200 L 98.165 200 L 157.502 200 Z " fill-rule="evenodd" fill="none" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="miter" stroke-linecap="butt" stroke-miterlimit="4"/>
+        <g>
+            <line x1="69" y1="87.159" x2="69" y2="69" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="87.159" y1="69" x2="69" y2="69" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="56.159" y1="100" x2="69" y2="87.159" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="87.159" y1="69" x2="100" y2="56.159" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="131.159" y1="87.159" x2="131.159" y2="69" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="113" y1="69" x2="131.159" y2="69" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="144" y1="100" x2="131.159" y2="87.159" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="113" y1="69" x2="100.159" y2="56.159" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="69" y1="112.841" x2="69" y2="131" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="87.159" y1="131" x2="69" y2="131" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="56.159" y1="100" x2="69" y2="112.841" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="87.159" y1="131" x2="100" y2="143.841" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="131.159" y1="112.841" x2="131.159" y2="131" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="113" y1="131" x2="131.159" y2="131" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="144" y1="100" x2="131.159" y2="112.841" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+            <line x1="113" y1="131" x2="100.159" y2="143.841" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="3"/>
+        </g>
+        <path stroke="#ffffff05" d=" M 100 0.007 L 66.516 33.492 L 0.011 99.999 L 100 199.993 L 199.987 99.999 L 100 0.007 Z " fill-rule="evenodd" fill="none" vector-effect="non-scaling-stroke" stroke-width="1.5" stroke-dasharray="0,0" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4"/>
+    </g>
+</svg>

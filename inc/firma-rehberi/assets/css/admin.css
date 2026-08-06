@@ -1,0 +1,90 @@
+/* =========================================
+   Firma Rehberi — Admin CSS
+   ========================================= */
+
+/* Metabox tablosu */
+.firma-meta-table {
+    width: 100%;
+}
+.firma-meta-table th {
+    width: 140px;
+    vertical-align: top;
+    padding-top: 8px;
+    font-weight: 600;
+}
+.firma-meta-table td {
+    padding: 4px 0 8px;
+}
+.firma-meta-table .large-text {
+    width: 100%;
+}
+
+/* Harita Picker */
+#firma-map-picker {
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* Çalışma Saatleri */
+.firma-hours-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.firma-hours-table thead th {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #666;
+    padding: 6px 10px;
+    background: #f6f7f7;
+    border-bottom: 1px solid #ddd;
+}
+.firma-hours-table tbody tr td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+.firma-hours-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.firma-time-input {
+    width: 110px;
+    font-size: 13px;
+}
+.firma-day-kapali .firma-time-input {
+    opacity: 0.4;
+}
+
+/* ---- Sekme Sistemi ---- */
+.hg-tab-content {
+    display: none;
+}
+.hg-tab-active {
+    display: block;
+}
+.hg-tab-heading {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1d2327;
+    margin: 0 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.hg-tab-heading .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: var(--mevzu-primary, #0d6efd);
+}
+
+/* Onay bekleyen rozeti */
+.wrap.mevzu-settings-wrap h1 { margin-bottom: 1rem; }
+
+/* Admin settings sayfası */
+.firma-basvuru-wrap-admin .button-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}

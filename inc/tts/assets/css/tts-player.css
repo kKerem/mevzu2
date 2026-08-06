@@ -1,0 +1,466 @@
+/* Mevzu TTS Player — mevzu-player (video) ile uyumlu kompakt ses arayüzü */
+.mtp-wrapper {
+    --mtp-accent: var(--mevzu-primary, #e90808);
+    --mtp-bg: #1a1d21;
+    --mtp-bar: rgba(255, 255, 255, 0.12);
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--mtp-bg);
+    color: #fff;
+    font-size: 13px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.mtp-wrapper .mtp-audio {
+    display: none;
+}
+
+.mtp-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+}
+
+.mtp-btn {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: var(--mtp-accent);
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.mtp-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.04);
+}
+
+.mtp-btn svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+.mtp-progress-wrap {
+    flex: 1;
+    min-width: 0;
+}
+
+.mtp-progress {
+    height: 5px;
+    background: var(--mtp-bar);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.mtp-progress-buffered {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background: rgba(255, 255, 255, 0.2);
+    pointer-events: none;
+}
+
+.mtp-progress-filled {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background: var(--mtp-accent);
+    pointer-events: none;
+    transition: width 0.1s linear;
+}
+
+.mtp-times {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 11px;
+    opacity: 0.75;
+    font-variant-numeric: tabular-nums;
+}
+
+.mtp-btn-mute {
+    background: transparent;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+}
+
+.mtp-btn-mute:hover {
+    background: var(--mtp-bar);
+}
+
+.mtp-volume {
+    width: 56px;
+    height: 4px;
+    background: var(--mtp-bar);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+    display: none;
+}
+
+@media (min-width: 480px) {
+    .mtp-volume {
+        display: block;
+    }
+}
+
+.mtp-volume-filled {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 70%;
+    background: #fff;
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+.mtp-label {
+    font-size: 11px;
+    opacity: 0.85;
+    white-space: nowrap;
+    margin-right: 4px;
+}
+
+.kkerem-tts-player .mtp-wrapper {
+    max-width: 100%;
+}
+
+.kkerem-tts-player .mtp-controls {
+    padding: 6px 10px;
+}
+
+.kkerem-tts-player .mtp-wrapper--full .mtp-btn {
+    width: 25px;
+    height: 25px;
+}
+
+/* —— Dalga (wave): neon RGB glow (solid border yok) —— */
+@property --kkerem-tts-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.kkerem-tts-player--wave {
+    --kkerem-tts-angle: 0deg;
+    --kkerem-tts-glow: conic-gradient(
+        from var(--kkerem-tts-angle),
+        #ff2244,
+        #ff8a00,
+        #ffe600,
+        #00ff88,
+        #00eeff,
+        #4488ff,
+        #cc44ff,
+        #ff44cc,
+        #ff2244
+    );
+    position: relative;
+    display: inline-flex;
+    border-radius: var(--mevzu-border-radius-pill);
+    overflow: visible;
+    isolation: isolate;
+    background: transparent;
+    cursor: pointer;
+    animation: kkerem-tts-glow-spin 2.6s linear infinite;
+}
+
+/* Sürekli, soluk glow (ilk yükleme hissi) */
+.kkerem-tts-player--wave::before {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    z-index: 0;
+    border-radius: inherit;
+    background: var(--kkerem-tts-glow);
+    filter: blur(12px) saturate(1.35) brightness(1.05);
+    pointer-events: none;
+    animation: kkerem-tts-glow-pulse 2.8s ease-in-out infinite;
+}
+
+.kkerem-tts-player--wave::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    background: var(--kkerem-tts-glow);
+    filter: blur(5px) saturate(1) brightness(1);
+    pointer-events: none;
+    animation: kkerem-tts-glow-pulse 2.8s ease-in-out -0.7s infinite;
+}
+
+@keyframes kkerem-tts-glow-pulse {
+    0%,
+    100% {
+        opacity: 0.28;
+    }
+    18% {
+        opacity: 0.62;
+    }
+    50% {
+        opacity: 0.45;
+    }
+    78% {
+        opacity: 0.58;
+    }
+}
+
+/* Ses çalarken: daha belirgin glow */
+.kkerem-tts-player--wave.mtp-playing {
+    animation-duration: 2s;
+}
+
+.kkerem-tts-player--wave.mtp-playing::before {
+    filter: blur(16px) saturate(1.9) brightness(1.22);
+    animation: kkerem-tts-glow-pulse-strong 2.2s ease-in-out infinite;
+}
+
+.kkerem-tts-player--wave.mtp-playing::after {
+    filter: blur(28px) saturate(1.7) brightness(1.12);
+    animation: kkerem-tts-glow-pulse-strong 2.2s ease-in-out -0.5s infinite;
+}
+
+@keyframes kkerem-tts-glow-pulse-strong {
+    0%,
+    100% {
+        opacity: 0.55;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes kkerem-tts-glow-spin {
+    to {
+        --kkerem-tts-angle: 360deg;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kkerem-tts-player--wave {
+        animation: none;
+    }
+
+    .kkerem-tts-player--wave::before {
+        animation: none;
+        opacity: 0.38;
+        filter: blur(10px) saturate(1.25);
+    }
+
+    .kkerem-tts-player--wave::after {
+        animation: none;
+        opacity: 0.22;
+        filter: blur(14px);
+    }
+
+    .kkerem-tts-player--wave.mtp-playing::before {
+        opacity: 0.55;
+        filter: blur(14px) saturate(1.6);
+    }
+
+    .kkerem-tts-player--wave.mtp-playing::after {
+        opacity: 0.38;
+        filter: blur(20px);
+    }
+}
+
+.kkerem-tts-player--wave .mtp-wrapper--wave {
+    --mtp-accent: var(--mevzu-dark, #e90808);
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    max-width: none;
+    padding: .25rem 1rem .25rem .25rem;
+    background: var(--mevzu-white, #fff);
+    border-top-left-radius: var(--mevzu-border-radius-pill);
+    border-bottom-left-radius: var(--mevzu-border-radius-pill);
+    border-top-right-radius: var(--mevzu-border-radius);
+    border-bottom-right-radius: var(--mevzu-border-radius-pill);
+    box-shadow: none;
+    overflow: visible;
+}
+.mtp-wave-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s ease;
+}
+
+.kkerem-tts-player--wave:hover .mtp-btn-wave {
+    transform: scale(1.06);
+}
+
+.mtp-wave-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--mtp-accent);
+    white-space: nowrap;
+}
+
+.mtp-btn-wave {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--mtp-accent);
+    color: #fff;
+    pointer-events: none;
+    transition:.1s;
+}
+
+.kkerem-tts-player--wave:focus-visible {
+    outline: 2px solid var(--mtp-accent);
+    outline-offset: 2px;
+}
+
+.mtp-wave-play {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mtp-wave-bars {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5px;
+    width: 30px;
+    height: 13px;
+}
+
+.mtp-wave-bar {
+    display: block;
+    width: 1.5px;
+    height: 100%;
+    border-radius: 3px;
+    background: var(--mevzu-white);
+    transform-origin: center center;
+    opacity: 0.88;
+}
+
+.mtp-wrapper--wave.mtp-playing .mtp-wave-play {
+    display: none;
+}
+
+.mtp-wrapper--wave.mtp-playing .mtp-wave-bars {
+    display: flex;
+}
+
+/*
+ * 5 çubuk — kademeli yükseklik (1,5 < 2,4 < 3), organik ritim
+ * Senkron nabız yerine hafif faz + çok adımlı eğri
+ */
+.mtp-wrapper--wave.mtp-playing .mtp-wave-bar:nth-child(1) {
+    animation: mtp-wave-eq-outer 1.18s ease-in-out -0.2s infinite;
+}
+
+.mtp-wrapper--wave.mtp-playing .mtp-wave-bar:nth-child(2) {
+    animation: mtp-wave-eq-mid 1.02s ease-in-out -0.35s infinite;
+}
+
+.mtp-wrapper--wave.mtp-playing .mtp-wave-bar:nth-child(3) {
+    animation: mtp-wave-eq-center 0.92s ease-in-out -0.12s infinite;
+}
+
+.mtp-wrapper--wave.mtp-playing .mtp-wave-bar:nth-child(4) {
+    animation: mtp-wave-eq-mid 1.06s ease-in-out -0.48s infinite;
+}
+
+.mtp-wrapper--wave.mtp-playing .mtp-wave-bar:nth-child(5) {
+    animation: mtp-wave-eq-outer 1.22s ease-in-out -0.28s infinite;
+}
+
+/* Köşeler — en dar hareket */
+@keyframes mtp-wave-eq-outer {
+    0%,
+    100% {
+        transform: scaleY(0.24);
+    }
+    22% {
+        transform: scaleY(0.36);
+    }
+    48% {
+        transform: scaleY(0.45);
+    }
+    74% {
+        transform: scaleY(0.58);
+    }
+}
+
+/* İç yanlar — orta hareket */
+@keyframes mtp-wave-eq-mid {
+    0%,
+    100% {
+        transform: scaleY(0.5);
+    }
+    22% {
+        transform: scaleY(0.72);
+    }
+    48% {
+        transform: scaleY(0.46);
+    }
+    74% {
+        transform: scaleY(0.8);
+    }
+}
+
+/* Orta — en belirgin hareket */
+@keyframes mtp-wave-eq-center {
+    0%,
+    100% {
+        transform: scaleY(0.8);
+    }
+    22% {
+        transform: scaleY(0.88);
+    }
+    48% {
+        transform: scaleY(0.52);
+    }
+    74% {
+        transform: scaleY(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mtp-wrapper--wave.mtp-playing .mtp-wave-bar:nth-child(1),
+    .mtp-wrapper--wave.mtp-playing .mtp-wave-bar:nth-child(5) {
+        animation: none;
+        transform: scaleY(0.48);
+    }
+
+    .mtp-wrapper--wave.mtp-playing .mtp-wave-bar:nth-child(2),
+    .mtp-wrapper--wave.mtp-playing .mtp-wave-bar:nth-child(4) {
+        animation: none;
+        transform: scaleY(0.62);
+    }
+
+    .mtp-wrapper--wave.mtp-playing .mtp-wave-bar:nth-child(3) {
+        animation: none;
+        transform: scaleY(0.82);
+    }
+}

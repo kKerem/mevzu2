@@ -1,0 +1,207 @@
+/* ── Mevzu² Reklam Yöneticisi ─────────────────────────── */
+.mevzu-ads-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+}
+.mevzu-ads-title .dashicons { font-size: 1.5rem; width: 1.5rem; height: 1.5rem; color: #2271b1; }
+
+.mevzu-ads-subtitle {
+    color: #666;
+    margin-bottom: 24px;
+    font-size: 14px;
+}
+.mevzu-ads-subtitle code {
+    background: #f0f0f0;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 13px;
+}
+
+/* Grid */
+.mevzu-ads-grid { display: flex; flex-direction: column; gap: 32px; }
+
+.mevzu-ads-group {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: #888;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 6px;
+    margin: 0 0 16px;
+}
+
+.mevzu-ads-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+    grid-column: 1/-1;
+}
+.mevzu-ads-section > h2 {
+    grid-column: 1/-1;
+}
+
+/* Card */
+.mevzu-ad-card {
+    background: #fff;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color .2s, box-shadow .2s;
+    display: flex;
+    flex-direction: column;
+}
+.mevzu-ad-card.is-active {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 3px rgba(34,113,177,.1);
+}
+
+/* Header */
+.mevzu-ad-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: #fafafa;
+    border-bottom: 1px solid #e5e5e5;
+}
+.mevzu-ad-card-info strong { display: block; font-size: 14px; }
+.mevzu-ad-id {
+    font-size: 11px;
+    color: #999;
+    background: #f0f0f0;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-top: 2px;
+    display: inline-block;
+}
+
+/* Toggle */
+.mevzu-toggle { display: inline-flex; align-items: center; cursor: pointer; }
+.mevzu-toggle input { display: none; }
+.mevzu-toggle-slider {
+    width: 40px; height: 22px;
+    background: #ccc;
+    border-radius: 11px;
+    position: relative;
+    transition: background .2s;
+}
+.mevzu-toggle-slider::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 16px; height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform .2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+.mevzu-toggle input:checked + .mevzu-toggle-slider { background: #2271b1; }
+.mevzu-toggle input:checked + .mevzu-toggle-slider::after { transform: translateX(18px); }
+
+/* Body */
+.mevzu-ad-card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 14px; }
+
+/* Type tabs */
+.mevzu-ad-type-tabs { display: flex; gap: 6px; }
+.mevzu-type-btn {
+    flex: 1;
+    padding: 7px 10px;
+    border: 1.5px solid #ddd;
+    border-radius: 6px;
+    background: #f7f7f7;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all .15s;
+    color: #555;
+}
+.mevzu-type-btn .dashicons { font-size: 16px; width: 16px; height: 16px; }
+.mevzu-type-btn.active {
+    border-color: #2271b1;
+    background: #e8f0fa;
+    color: #2271b1;
+    font-weight: 600;
+}
+.mevzu-type-btn:hover:not(.active) { border-color: #aaa; background: #f0f0f0; }
+
+/* Panels */
+.mevzu-ad-panel { display: none; flex-direction: column; gap: 10px; }
+.mevzu-ad-panel.active { display: flex; }
+
+/* Image panel */
+.mevzu-image-preview {
+    min-height: 80px;
+    background: #f8f8f8;
+    border: 1px dashed #ddd;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.mevzu-image-preview img { max-height: 120px; max-width: 100%; object-fit: contain; }
+.mevzu-image-actions { display: flex; gap: 8px; }
+
+/* HTML panel */
+.mevzu-panel-html label { font-size: 13px; font-weight: 600; color: #555; }
+.mevzu-ad-html-code {
+    width: 100%;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 8px;
+    resize: vertical;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Fields */
+.mevzu-field { display: flex; flex-direction: column; gap: 4px; }
+.mevzu-field label { font-size: 12px; font-weight: 600; color: #666; }
+.mevzu-field input { border-radius: 5px !important; }
+
+/* Options */
+.mevzu-ad-options { border-top: 1px solid #f0f0f0; padding-top: 10px; }
+.mevzu-checkbox-label { display: flex; align-items: center; gap: 7px; font-size: 13px; cursor: pointer; color: #555; }
+.mevzu-checkbox-label input { cursor: pointer; }
+
+/* Footer */
+.mevzu-ad-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #fafafa;
+    border-top: 1px solid #e5e5e5;
+}
+.mevzu-save-status {
+    font-size: 13px;
+    color: #2271b1;
+    transition: opacity .3s;
+}
+.mevzu-save-status.error { color: #d63638; }
+
+/* Tarih alanları */
+.mevzu-ad-dates {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.mevzu-ad-dates-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+.mevzu-ad-dates-row .mevzu-field label { font-size: 11px; font-weight: 600; color: #888; }
+.mevzu-ad-dates-row input[type=date] { font-size: 12px; border-radius: 5px !important; }
