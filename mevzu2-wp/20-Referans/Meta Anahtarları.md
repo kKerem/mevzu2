@@ -17,21 +17,21 @@ için var. Her anahtarın tanımlandığı/okunduğu dosya ve satır referanslı
 ## Sayfa Ayarları kutusu (post meta)
 
 Tümü `inc/theme-settings/class-post-metabox.php` içinde `save_post_meta()`
-(satır 637'de başlar) tarafından kaydedilir:
+(satır 684'te başlar) tarafından kaydedilir:
 
 | Anahtar | Amaç | Kayıt satırı |
 |---|---|---|
-| `mevzu_manset_konumlari` | manşet bölgesi işaretleri (dizi) — bkz. [[Manşet Sistemi]] | `inc/theme-settings/class-post-metabox.php:654` |
-| `ust_manset_gorseli_id` / `_url` | Üst Manşet'e özel görsel | `inc/theme-settings/class-post-metabox.php:659`, `669` |
-| `yazi_ayarlari` | eski checkbox alanı (dizi); `manset_var` değeri swiper başlıklarını gizler | `inc/theme-settings/class-post-metabox.php:709` |
-| `youtube_url` | eski YouTube gömme alanı | `inc/theme-settings/class-post-metabox.php:716` |
-| `mevzu_embed_media_url` | genel medya embed URL'si | `inc/theme-settings/class-post-metabox.php:725` |
-| `mevzu_native_video_id` / `mevzu_native_video_url` | Cloudflare R2 video | `inc/theme-settings/class-post-metabox.php:733`, `743` |
-| `ilan_numarasi` | Resmi İlan numarası — bkz. [[Resmi İlanlar]] | `inc/theme-settings/class-post-metabox.php:760` |
-| `reklamlari_gizle` | yazıda reklamları gizle | `inc/theme-settings/class-post-metabox.php:765` |
-| `sayfa_renk` | sayfaya özel renk | `inc/theme-settings/class-post-metabox.php:768` |
-| `iletisim_formu_eposta` / `iletisim_formu_aktif` | sayfa içi iletişim formu | `inc/theme-settings/class-post-metabox.php:771`, `774` |
-| `default_repeater`, `default_repeater_{n}_ilk/ikinci` | tekrarlanan alan grubu | `inc/theme-settings/class-post-metabox.php:782`-`794` |
+| `mevzu_manset_konumlari` | manşet bölgesi işaretleri (dizi) — bkz. [[Manşet Sistemi]] | `inc/theme-settings/class-post-metabox.php:705` |
+| `ust_manset_gorseli_id` / `_url` | Üst Manşet'e özel görsel | `inc/theme-settings/class-post-metabox.php:710`, `720` |
+| `yazi_ayarlari` | eski checkbox alanı (dizi); `manset_var` değeri swiper başlıklarını gizler | `inc/theme-settings/class-post-metabox.php:760` |
+| `youtube_url` | eski YouTube gömme alanı | `inc/theme-settings/class-post-metabox.php:767` |
+| `mevzu_embed_media_url` | genel medya embed URL'si | `inc/theme-settings/class-post-metabox.php:776` |
+| `mevzu_native_video_id` / `mevzu_native_video_url` | Cloudflare R2 video | `inc/theme-settings/class-post-metabox.php:784`, `794` |
+| `ilan_numarasi` | Resmi İlan numarası — bkz. [[Resmi İlanlar]] | `inc/theme-settings/class-post-metabox.php:811` |
+| `reklamlari_gizle` | yazıda reklamları gizle | `inc/theme-settings/class-post-metabox.php:816` |
+| `sayfa_renk` | sayfaya özel renk | `inc/theme-settings/class-post-metabox.php:819` |
+| `iletisim_formu_eposta` / `iletisim_formu_aktif` | sayfa içi iletişim formu | `inc/theme-settings/class-post-metabox.php:822`, `825` |
+| `default_repeater`, `default_repeater_{n}_ilk/ikinci` | tekrarlanan alan grubu | `inc/theme-settings/class-post-metabox.php:833`-`845` |
 
 ## TTS (bkz. [[TTS ve Seslendirme]])
 
@@ -45,11 +45,11 @@ Tümü `inc/theme-settings/class-post-metabox.php` içinde `save_post_meta()`
 
 | Anahtar | Amaç | Dosya |
 |---|---|---|
-| `views_count` | yazı görüntülenme sayacı | `functions.php:154` (okuma), `functions.php:178` (artırma) |
+| `views_count` | yazı görüntülenme sayacı | `functions.php:155` (okuma), `functions.php:179` (artırma) |
 | `menu-ikon` | menü öğesi ikonu | `inc/theme-settings/class-menu-fields.php:15` |
 | `cat_icon` | kategori/menü ikonu (walker) | `inc/class-wp-bootstrap-navwalker.php:280` |
-| `gorselDefault` | öne çıkan görsel yoksa varsayılan görsel bayrağı | `functions.php:3259` |
-| `ajans` | haber ajansı bilgisi | `functions.php:1865` |
+| `gorselDefault` | öne çıkan görsel yoksa varsayılan görsel bayrağı | `functions.php:3260` |
+| `ajans` | haber ajansı bilgisi | `functions.php:1866` |
 | `ekonomi_kategorisi` | Finans şablonunda seçili kategori | `sablon/finans.php:160` |
 
 ## Firma Rehberi (`_firma_*`)

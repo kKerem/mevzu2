@@ -20,7 +20,7 @@ firma rehberi vb.) aktif olduğunu kontrol eder.
 
 ## İlgili dosyalar
 
-- `functions.php:6412` — `get_opt_g()` tanımı (ayar okuma katmanı)
+- `functions.php:6413` — `get_opt_g()` tanımı (ayar okuma katmanı)
 - `inc/theme-settings/init.php:3` — panelin giriş noktası (ACF'nin yerini alan native altyapı)
 - `inc/theme-settings/init.php:37` — `mevzu_register_modules()` — tüm modüllerin listesi
 - `inc/theme-settings/class-settings-page.php:11` — ana ayar sayfası sınıfı
@@ -49,7 +49,7 @@ Bu sistem çoğunlukla **option** (site geneli) kullanır, post meta değil:
 - `wp_ajax_mevzu_save_blocks`, `wp_ajax_mevzu_save_ana_kat_blocks` — anasayfa blok ayarları
 - `mevzu_theme_update_check_cron` (özel action, periyodik zamanlanır) → güncelleme kontrolü
 - `mevzu_theme_auto_apply_scheduled` (özel action) → otomatik sürüm uygulama
-- `mevzu_content_width` (filter, `functions.php:517`) → tema içerik genişliği
+- `mevzu_content_width` (filter, `functions.php:518`) → tema içerik genişliği
 - `mevzu_breadcrumb_show_parents`, `mevzu_meta_degisken` (filter) — diğer modüllerin
   (ör. [[Resmi İlanlar]]) çekirdek davranışı override etmesini sağlar
 
@@ -58,7 +58,7 @@ Bu sistem çoğunlukla **option** (site geneli) kullanır, post meta değil:
 - `get_opt_g()` önce `{option_name}_{key}` tekil seçeneğine bakar; eski
   `options_manset` gibi dizi tabanlı kayıtlarla aynı anahtar çakışırsa
   tekil kayıt her zaman kazanır (fonksiyonun kendi yorum satırında da
-  belirtilmiş, `functions.php:6414` civarı).
+  belirtilmiş, `functions.php:6415` civarı).
 - Bir modül `Mevzu_Module_Manager::register()` ile kayıtlı değilse ayarlar
   panelinde hiç görünmez; sadece `mevzu_modules` seçeneğine elle `1` yazmak
   yetmez.

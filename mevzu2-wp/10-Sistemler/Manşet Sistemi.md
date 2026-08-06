@@ -22,9 +22,9 @@ işaretlemelerle belirlenir. İşaretler tek bir post meta dizisinde tutulur.
 
 - `inc/theme-settings/class-post-metabox.php:30` — metabox kaydı
 - `inc/theme-settings/class-post-metabox.php:147` — arayüz render
-- `inc/theme-settings/class-post-metabox.php:637` — kaydetme
+- `inc/theme-settings/class-post-metabox.php:684` — kaydetme
 - `index.php` — beş sorgu (yukarıdaki tablo)
-- `functions.php:6596` — transient temizleme
+- `functions.php:6597` — transient temizleme
 
 ## Meta anahtarları
 
@@ -34,7 +34,7 @@ işaretlemelerle belirlenir. İşaretler tek bir post meta dizisinde tutulur.
 ## Önbellek
 
 Manşet sorguları süresiz transient ile saklanır (`set_transient(..., 0)`).
-`functions.php:6596`'daki `clear_custom_post_transients()` kayıt sırasında
+`functions.php:6597`'daki `clear_custom_post_transients()` kayıt sırasında
 temizler. **Bu fonksiyon kapsamında olmayan bir post tipi manşete
 eklenirse anasayfa güncellenmez.**
 

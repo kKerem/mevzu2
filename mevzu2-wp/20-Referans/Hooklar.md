@@ -23,15 +23,15 @@ kim dinliyor" sorusuna hızlı cevap.
 | `mevzu_tts_audio_retention_cleanup` | günlük `wp_schedule_event()` — `inc/tts/class-audio-retention.php:29` | `Mevzu_TTS_Audio_Retention::run_cleanup()` — `inc/tts/class-audio-retention.php:21` |
 | `mevzu_theme_update_check_cron` | periyodik zamanlanır — `inc/theme-settings/class-settings-page.php:2204` | `run_theme_update_cron_check()` — `inc/theme-settings/class-settings-page.php:24` |
 | `mevzu_theme_auto_apply_scheduled` | `wp_schedule_single_event()` — `inc/theme-settings/class-settings-page.php:2288` | `run_scheduled_auto_theme_apply()` — `inc/theme-settings/class-settings-page.php:25` |
-| `fetch_pharmacy_data_event` | kodda devre dışı bırakılmış örnek (`functions.php:2703`, yorum satırı) | — |
+| `fetch_pharmacy_data_event` | kodda devre dışı bırakılmış örnek (`functions.php:2704`, yorum satırı) | — |
 
 ## Özel filter'lar
 
 | Hook | Varsayılan/çağrı yeri | Kim override ediyor |
 |---|---|---|
-| `mevzu_content_width` | `functions.php:517`, varsayılan `776` | — |
-| `mevzu_breadcrumb_show_parents` | `functions.php:279` — breadcrumb'da üst kategoriler gösterilsin mi | `inc/resmi-ilanlar/init.php:173` — Resmi İlanlar'da kapatır (bkz. [[Resmi İlanlar]]) |
-| `mevzu_meta_degisken` | `functions.php:1845`, varsayılan `'news'` — şema/meta türü | `inc/resmi-ilanlar/init.php:128` — Resmi İlanlar kendi türünü döndürür |
+| `mevzu_content_width` | `functions.php:518`, varsayılan `776` | — |
+| `mevzu_breadcrumb_show_parents` | `functions.php:280` — breadcrumb'da üst kategoriler gösterilsin mi | `inc/resmi-ilanlar/init.php:173` — Resmi İlanlar'da kapatır (bkz. [[Resmi İlanlar]]) |
+| `mevzu_meta_degisken` | `functions.php:1846`, varsayılan `'news'` — şema/meta türü | `inc/resmi-ilanlar/init.php:128` — Resmi İlanlar kendi türünü döndürür |
 
 ## Yaygın WP hook'ları — kim kullanıyor
 
@@ -40,9 +40,9 @@ kim dinliyor" sorusuna hızlı cevap.
 - `inc/theme-settings/class-post-metabox.php:14` — Sayfa Ayarları kaydı (öncelik 10)
 - `inc/social-automation/class-post-meta.php:22` — sosyal paylaşım ayarı (öncelik 15)
 - `inc/tts/init.php:52` — TTS kuyruğu (öncelik **99** — meta'lar kaydedildikten sonra çalışsın diye kasıtlı olarak geç)
-- `functions.php:6620` — `clear_custom_post_transients()` (bkz. [[Manşet Sistemi]])
-- `functions.php:3263`, `3289` — varsayılan görsel meta bakımı
-- `functions.php:7339` — emlak/alsat checkbox kaydı
+- `functions.php:6621` — `clear_custom_post_transients()` (bkz. [[Manşet Sistemi]])
+- `functions.php:3264`, `3290` — varsayılan görsel meta bakımı
+- `functions.php:7340` — emlak/alsat checkbox kaydı
 
 `before_delete_post`:
 
