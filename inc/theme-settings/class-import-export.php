@@ -69,7 +69,7 @@ class Mevzu_Import_Export {
             ),
             'yapay_zeka' => array(
                 'label' => 'Mevzu² AI',
-                'icon'  => '',
+                'icon'  => 'asd',
                 'keys'  => self::get_yapay_zeka_keys(),
             ),
             'icerik' => array(

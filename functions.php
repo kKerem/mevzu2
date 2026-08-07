@@ -7311,7 +7311,7 @@ add_action('admin_footer', function() {
     <div id="mevzu-alsat-hidden-container" style="display: none;">
         <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;cursor:pointer;border-top:1px solid #dcdcde;padding-top:10px;margin-top:10px;">
             <input type="checkbox" name="alsat_platform_show" value="1" <?php checked($alsat_show, '1'); ?>>
-            <span class="badge rounded-pill text-bg-primary me-1">YENİ</span><?php _e('AlSat Platformunda Göster', 'mevzu2'); ?>
+            <?php _e('BizdenAllSat\'ta Göster', 'mevzu2'); ?>
         </label>
     </div>
 

@@ -4,9 +4,14 @@ Untitled
 
 # --- Bağımlılıklar ---
 node_modules/
-vendor/
 package-lock.json
 composer.lock
+
+# Yalnızca KÖK composer vendor'ı (henüz oluşturulmadı, composer install üretir).
+# Başında '/' olması şart: 'vendor/' yazılırsa her derinlikte eşleşir ve temanın
+# kendi parçası olan inc/carbon-fields/vendor (572 dosya), css/vendor, js/vendor
+# depodan düşer — depoyu klonlayan çalışmayan bir tema alır.
+/vendor/
 
 # --- Sırlar (asla commit edilmez) ---
 inc/config-keys.php
