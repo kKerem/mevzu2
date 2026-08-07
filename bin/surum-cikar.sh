@@ -101,6 +101,30 @@ if [ "$YEREL_BOYUT" != "$UZAK_BOYUT" ]; then
 fi
 echo "Yükleme doğrulandı: $UZAK_BOYUT bayt"
 
-gh release create "v$SURUM" "$ZIP" --title "v$SURUM" \
-  --notes "Ayrıntılar için CHANGELOG.md dosyasına bakın."
-echo "Sürüm $SURUM yayınlandı."
+# DİKKAT: Zip'i GitHub Release'e EKLEME.
+#
+# Paket, müşteriye gitmesi için gerçek `inc/config-keys.php` dosyasını
+# (lisans imza anahtarı, hava durumu, namaz vakitleri ve nöbetçi eczane
+# anahtarları) içerir. GitHub Release'leri herkese açıktır; zip'i oraya
+# eklemek bu anahtarları herkesin indirebileceği hale getirir.
+#
+# Zip'in tek dağıtım kanalı lisans sunucusudur (yukarıdaki 7/7 adımı).
+# Release yalnızca sürüm notu taşır.
+#
+# Bu 2026-08-07'de gerçekten yaşandı: v1.3.8 zip'i yanlışlıkla Release'e
+# eklendi, ~1 dakika sonra silindi (indirme sayısı 0).
+NOT_METNI="$(sed -n "/^## \[$SURUM\]/,/^## \[/p" "$CHANGELOG" | sed '$d')"
+[ -n "$NOT_METNI" ] || NOT_METNI="Ayrıntılar için CHANGELOG.md dosyasına bakın."
+
+gh release create "v$SURUM" --title "v$SURUM" --notes "$NOT_METNI"
+
+# Yanlışlıkla varlık eklenmediğini doğrula.
+VARLIK_SAYISI="$(gh release view "v$SURUM" --json assets --jq '.assets | length')"
+if [ "${VARLIK_SAYISI:-0}" -ne 0 ]; then
+  echo "HATA: Release'e varlık eklenmiş — zip herkese açık olabilir!" >&2
+  gh release view "v$SURUM" --json assets --jq '.assets[].name' >&2
+  echo "  Hemen kaldırın: gh release delete-asset v$SURUM <ad> --yes" >&2
+  exit 1
+fi
+
+echo "Sürüm $SURUM yayınlandı (zip yalnızca lisans sunucusunda)."
