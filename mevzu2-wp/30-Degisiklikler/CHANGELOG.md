@@ -8,6 +8,8 @@ Kategoriler: **Eklendi**, **Değiştirildi**, **Düzeltildi**, **Kaldırıldı**
 
 ## [Yayınlanmamış]
 
+## [1.3.8] — 2026-08-07
+
 ### Eklendi
 
 - Resmi ilanlara manşet alanları eklendi. `Sayfa Ayarları` kutusundan
