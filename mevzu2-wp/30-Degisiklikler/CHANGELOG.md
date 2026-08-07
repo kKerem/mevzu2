@@ -8,6 +8,19 @@ Kategoriler: **Eklendi**, **Değiştirildi**, **Düzeltildi**, **Kaldırıldı**
 
 ## [Yayınlanmamış]
 
+### Eklendi
+
+- Haberlere (`post`) tekil, yeniden kullanılabilir bir `Kaynak` alanı
+  eklendi. Etiketler gibi çalışır — önceden girilen bir kaynak yazılmaya
+  başlanınca otomatik tamamlama ile önerilir — ancak bir yazıya yalnızca
+  tek bir kaynak atanabilir (ör. "Karabük Belediyesi").
+
+### Düzeltildi
+
+- `.gitignore`'daki `vendor/` kuralı kök seviyeye (`/vendor/`) sabitlendi.
+  Önceki hali her derinlikte eşleştiği için temanın kendi parçası olan
+  `inc/carbon-fields/vendor` (572 dosya) depodan düşmüştü.
+
 ## [1.3.8] — 2026-08-07
 
 ### Eklendi

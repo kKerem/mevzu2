@@ -14,6 +14,7 @@ nasıl çalıştığını sistem sistem anlatır.
 - [[TTS ve Seslendirme]] — haber seslendirme, "Günün Özeti"
 - [[Tema Ayarları]] — yönetim paneli seçenekleri
 - [[Lisans Sistemi]] — lisans doğrulama ve HMAC imzalama
+- [[Kaynak Alanı]] — haberlere tekil, yeniden kullanılabilir kaynak bilgisi
 
 ## Referans
 
