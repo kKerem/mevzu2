@@ -7,6 +7,7 @@ if (!defined('_S_VERSION')) {
 
 include('inc/keys.php');
 include('inc/ajax.php');
+include('inc/kaynak.php');
 include('inc/wp-bootstrap5.0-pagination.php');
 include('inc/bootstrap-5-wordpress-navbar-walker.php');
 
