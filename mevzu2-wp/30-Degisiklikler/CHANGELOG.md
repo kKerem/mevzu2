@@ -13,15 +13,15 @@ Kategoriler: **Eklendi**, **Değiştirildi**, **Düzeltildi**, **Kaldırıldı**
 - Haberlere (`post`) tekil, yeniden kullanılabilir bir `Kaynak` alanı
   eklendi. Etiketler gibi çalışır — önceden girilen bir kaynak yazılmaya
   başlanınca otomatik tamamlama ile önerilir — ancak bir yazıya yalnızca
-  tek bir kaynak atanabilir (ör. "Karabük Belediyesi"). Düzenleme ekranında
-  ana sütunda gösterilir; kaynak atanmışsa tüm tekil haber şablonlarında
-  içerikten hemen sonra "Kaynak: X" rozeti olarak da görünür.
-- Kaynak alanına, yalnızca **daha önce hiç eklenmemiş yeni bir kaynak**
-  girildiğinde ek bir URL alanı çıkar. Girilirse kaynağın web sitesi
-  adresi kaydedilir ve ön yüzdeki rozet oraya linklenir; mevcut bir
-  kaynak yeniden kullanıldığında URL alanı görünmez ve eski URL
-  değiştirilmez. URL'ler sonradan Yazılar → Kaynaklar ekranından da
-  eklenip düzeltilebilir.
+  tek bir kaynak atanabilir (ör. "İHA"). Düzenleme ekranında ana sütunda
+  gösterilir; kaynak atanmışsa tüm tekil haber şablonlarında içerikten
+  hemen sonra "Kaynak: X" rozeti olarak da görünür.
+- Kaynak alanının hemen altında her zaman görünen bir URL alanı var —
+  o yazının kaynak gösterdiği asıl bağlantı (ör. İHA'nın o habere ait
+  sayfası). URL yazıya özeldir: aynı kaynak (ör. "İHA") başka yazılarda
+  da kullanılsa bile her yazı kendi bağlantısını ayrı taşır, birbirini
+  etkilemez. Girilirse ön yüzdeki rozet oraya linklenir, boş bırakılırsa
+  rozet kaynağın iç arşiv sayfasına döner.
 
 ### Düzeltildi
 

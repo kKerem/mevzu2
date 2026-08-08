@@ -10,7 +10,11 @@ tags: [sistem, post-type]
 bir alan. Etiketler gibi çalışır — daha önce girilen bir kaynak yazılmaya
 başlanınca otomatik tamamlama ile önerilir ve aynı isim tekrar term
 oluşturmaz — ama etiketlerden farklı olarak bir yazıya yalnızca **tek**
-kaynak atanabilir. Örnek: "Karabük Belediyesi".
+kaynak atanabilir. Örnek: "İHA".
+
+Ayrıca her yazı, kaynağına ait **kendi** URL'sini taşıyabilir (ör. o
+habere kaynaklık eden İHA sayfasının linki). Bu URL kaynağın adına değil
+**yazıya** bağlıdır — bkz. "Meta anahtarları" ve "Bilinen tuzaklar".
 
 ## İlgili dosyalar
 
@@ -26,24 +30,25 @@ kaynak atanabilir. Örnek: "Karabük Belediyesi".
 
 ## Meta anahtarları
 
-Post meta kullanmaz. Değer, `kaynak` adlı düz (hiyerarşik olmayan) bir
-taksonomiye `wp_set_object_terms()` ile yazılır — WordPress'in etiket
-mekanizmasıyla aynı alt yapı, farkı kaydetme mantığında.
-
-- `kaynak_url` — term meta (`register_term_meta`). Kaynağın web sitesi
-  adresi. Yalnızca o kaynak **ilk kez** oluşturulurken yazı düzenleme
-  ekranından, ya da sonradan Yazılar → Kaynaklar ekranından set edilir.
+- `kaynak` taksonomisi — kaynağın ADI. `wp_set_object_terms()` ile yazılır,
+  WordPress'in etiket mekanizmasıyla aynı alt yapı (isim tekrar kullanılır,
+  duplike term oluşmaz).
+- `kaynak_url` — **post meta**, term meta DEĞİL. Bu, tasarımın en kritik
+  noktası: aynı kaynak (ör. "İHA") onlarca yazıda tekrar kullanılabilir
+  ama her yazının kaynak gösterdiği asıl haber linki farklıdır. URL
+  kaynağın kendisine değil, o yazıya özeldir — bu yüzden her yazı kendi
+  `kaynak_url` değerini post meta olarak taşır. (İlk tasarımda bu değer
+  yanlışlıkla term meta'ydı; bu, aynı kaynağı kullanan tüm yazılarda aynı
+  URL'nin gözükmesine yol açardı. Düzeltildi — bkz. CHANGELOG.)
 
 ## Hook'lar
 
-- `add_action('init', 'mevzu_kaynak_register_taxonomy')` — taksonomiyi ve `kaynak_url` term meta'sını kaydeder
+- `add_action('init', 'mevzu_kaynak_register_taxonomy')` — taksonomiyi kaydeder
 - `add_action('init', 'mevzu_kaynak_maybe_flush_rewrite', 20)` — `/kaynak/` arşiv linkleri için tek seferlik rewrite flush
-- `add_action('add_meta_boxes', 'mevzu_kaynak_add_meta_box')` — tekli-seçim kutusunu ekler
+- `add_action('add_meta_boxes', 'mevzu_kaynak_add_meta_box')` — tekli-seçim kutusunu ve URL alanını ekler
 - `add_action('admin_enqueue_scripts', 'mevzu_kaynak_admin_scripts')` — `jquery-ui-autocomplete` kaydını yükler
-- `add_action('wp_ajax_mevzu_kaynak_search', 'mevzu_kaynak_ajax_search')` — otomatik tamamlama sorgusu ve "bu kaynak var mı" kontrolü (JS aynı endpoint'i kullanır)
+- `add_action('wp_ajax_mevzu_kaynak_search', 'mevzu_kaynak_ajax_search')` — kaynak adı otomatik tamamlama sorgusu
 - `add_action('save_post_post', 'mevzu_kaynak_save_meta_box')` — kaydetme; yalnızca `post` tipinde çalışır
-- `add_action('kaynak_add_form_fields', ...)` / `add_action('kaynak_edit_form_fields', ...)` — Yazılar → Kaynaklar ekranında URL alanı
-- `add_action('created_kaynak', ...)` / `add_action('edited_kaynak', ...)` — o ekrandan URL kaydı
 
 ## Bilinen tuzaklar
 
@@ -58,22 +63,19 @@ mekanizmasıyla aynı alt yapı, farkı kaydetme mantığında.
   zaten kapalı (`functions.php:37`), ama açılsa bile REST'e açık bir
   taksonomi Gutenberg'in kendi çoklu-seçim panelini otomatik gösterir ve
   bu, tekli-seçim kutusuyla çakışırdı.
-- Aynı kaynağın farklı büyük/küçük harfle girilmesi (`Karabük Belediyesi` /
-  `karabük belediyesi`) ayrı term'ler oluşturur — büyük/küçük harf
-  duyarsız eşleştirme yapılmıyor.
+- Aynı kaynağın farklı büyük/küçük harfle girilmesi (`İHA` / `iha`) ayrı
+  term'ler oluşturur — büyük/küçük harf duyarsız eşleştirme yapılmıyor.
+- **URL alanı her zaman görünür**, kaynağın yeni ya da mevcut olmasına
+  bakılmaksızın — çünkü URL post meta'dır, her yazıda ayrı doldurulur.
+  (İlk sürümde URL alanı yalnızca "yeni kaynak" durumunda JS ile
+  gösteriliyordu ve blur olayını bekliyordu; bu hem odak kaybetmeden
+  görünmeme sorununa hem de asıl mantık hatasına — URL'nin term'e
+  bağlanmasına — yol açıyordu. İkisi de aynı düzeltmeyle çözüldü: URL
+  post meta'ya taşındı, JS show/hide mantığı tamamen kaldırıldı.)
 - Ön yüzde `mevzu_kaynak_the_badge()` ile "Kaynak: X" rozeti gösterilir
-  (dört tekil şablonda, içerikten hemen sonra). Kaynağın `kaynak_url` term
-  meta'sı doluysa rozet o dış adrese (`target="_blank" rel="nofollow noopener"`)
+  (dört tekil şablonda, içerikten hemen sonra). O yazının `kaynak_url`
+  post meta'sı doluysa rozet dış adrese (`target="_blank" rel="nofollow noopener"`)
   linklenir; boşsa `/kaynak/{slug}/` iç taksonomi arşivine döner.
-- URL alanı yalnızca **yeni** bir kaynak yazılırken görünür — mevcut bir
-  kaynağın adı tekrar girildiğinde (otomatik tamamlamadan seçilse de,
-  elle aynı isim yazılsa da) URL alanı gizlenir ve gönderilse bile
-  `mevzu_kaynak_save_meta_box()` içindeki `$onceden_vardi` kontrolü
-  mevcut kaynağın URL'sinin üzerine yazılmasını engeller.
-- "Yeni mi?" tespiti istemci tarafında `mevzu_kaynak_ajax_search`
-  sonucundaki isimler arasında **tam** eşleşme aranarak yapılır (JS
-  `indexOf`). `name__like` SQL `LIKE` kullandığı için alt dize eşleşmeleri
-  de dönebilir; tam eşleşme kontrolü bu yüzden gerekli.
 
 ## Bağlantılı
 
