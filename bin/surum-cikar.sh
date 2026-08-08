@@ -99,9 +99,18 @@ SFTP
 
 YEREL_BOYUT="$(wc -c < "$ZIP" | tr -d ' ')"
 # sftp 'ls -l' alanları: 1=izinler 2=? 3=uid 4=gid 5=boyut
+#
+# DİKKAT: sftp istemcisi verdiğimiz komutu "sftp> ls -l .../mevzu2.zip"
+# olarak EKRANA DA BASAR. Sorgu tam dosya yolunu içerdiği için bu echo
+# satırı da "mevzu2.zip" ile eşleşir ama yalnızca 4 alanı vardır ($5 boş).
+# Desen sadece /mevzu2\.zip/ olursa awk bu echo satırında exit eder ve
+# gerçek dosya satırına hiç ulaşmadan boş değer döner — v1.3.9 yayınında
+# gerçekten böyle oldu, dosya sunucuda doğru boyuttaydı ama doğrulama
+# "uzak: yok" dedi. /^-/ şartı satırın gerçekten `ls -l` çıktısı (izin
+# biçimiyle başlayan) olmasını zorunlu kılar, komut echo'sunu eler.
 UZAK_BOYUT="$(printf 'ls -l %s/%s/mevzu2.zip\n' "$UZAK_KOK" "$SURUM" \
   | sftp -o BatchMode=yes "$SUNUCU" 2>/dev/null \
-  | awk '/mevzu2\.zip/ { print $5; exit }')"
+  | awk '/^-/ && /mevzu2\.zip/ { print $5; exit }')"
 
 if [ "$YEREL_BOYUT" != "$UZAK_BOYUT" ]; then
   echo "HATA: boyut uyuşmuyor (yerel $YEREL_BOYUT, uzak ${UZAK_BOYUT:-yok}). Release oluşturulmadı." >&2
