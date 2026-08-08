@@ -47,7 +47,13 @@ grep -nE "^\s*\*?\s*Version:" style.css
 git add "$CHANGELOG" style.css
 git commit -m "chore: sürüm $SURUM"
 git tag "v$SURUM"
-git push origin main --follow-tags
+# DİKKAT: git tag (bayraksız) LIGHTWEIGHT bir etiket oluşturur. --follow-tags
+# yalnızca ANNOTATED etiketleri otomatik push eder — lightweight etiketleri
+# SESSİZCE ATLAR. v1.3.9 yayınında bu yüzden etiket yerelde kalıp uzağa hiç
+# gitmedi, gh release create de "tag ... has not been pushed" diye başarısız
+# oldu. Etiket burada AÇIKÇA adıyla push edilir.
+git push origin main
+git push origin "v$SURUM"
 
 echo "== 5/7 Paketleniyor =="
 mkdir -p dist
@@ -133,10 +139,12 @@ echo "Yükleme doğrulandı: $UZAK_BOYUT bayt"
 NOT_METNI="$(sed -n "/^## \[$SURUM\]/,/^## \[/p" "$CHANGELOG" | sed '$d')"
 [ -n "$NOT_METNI" ] || NOT_METNI="Ayrıntılar için CHANGELOG.md dosyasına bakın."
 
-gh release create "v$SURUM" --title "v$SURUM" --notes "$NOT_METNI"
+gh release create "v$SURUM" --title "v$SURUM" --notes "$NOT_METNI" \
+  || { echo "HATA: gh release create başarısız oldu — Release oluşturulmadı." >&2; exit 1; }
 
 # Yanlışlıkla varlık eklenmediğini doğrula.
-VARLIK_SAYISI="$(gh release view "v$SURUM" --json assets --jq '.assets | length')"
+VARLIK_SAYISI="$(gh release view "v$SURUM" --json assets --jq '.assets | length')" \
+  || { echo "HATA: gh release view başarısız oldu, varlık kontrolü yapılamadı." >&2; exit 1; }
 if [ "${VARLIK_SAYISI:-0}" -ne 0 ]; then
   echo "HATA: Release'e varlık eklenmiş — zip herkese açık olabilir!" >&2
   gh release view "v$SURUM" --json assets --jq '.assets[].name' >&2
