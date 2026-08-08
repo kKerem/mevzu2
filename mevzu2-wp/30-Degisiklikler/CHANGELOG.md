@@ -8,6 +8,8 @@ Kategoriler: **Eklendi**, **Değiştirildi**, **Düzeltildi**, **Kaldırıldı**
 
 ## [Yayınlanmamış]
 
+## [1.3.9] — 2026-08-08
+
 ### Eklendi
 
 - Haberlere (`post`) tekil, yeniden kullanılabilir bir `Kaynak` alanı
