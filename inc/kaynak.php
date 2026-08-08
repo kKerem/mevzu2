@@ -33,6 +33,15 @@ function mevzu_kaynak_register_taxonomy() {
         'meta_box_cb'       => false,
         'rewrite'           => [ 'slug' => 'kaynak' ],
     ] );
+
+    // Yeni bir kaynak eklenirken (daha önce var olmayan bir isimse) o kaynağın
+    // web sitesi adresini de saklayabilmek için term meta.
+    register_term_meta( 'kaynak', 'kaynak_url', [
+        'type'              => 'string',
+        'single'            => true,
+        'sanitize_callback' => 'esc_url_raw',
+        'show_in_rest'      => false,
+    ] );
 }
 add_action( 'init', 'mevzu_kaynak_register_taxonomy' );
 
@@ -74,20 +83,56 @@ function mevzu_kaynak_render_meta_box( $post ) {
     <p class="description" style="margin-top:6px">
         <?php esc_html_e( 'Yazının kaynağı. Yazmaya başlayınca daha önce girilmiş kaynaklar önerilir; yalnızca tek bir kaynak seçilebilir.', 'mevzu2' ); ?>
     </p>
+
+    <div id="mevzu_kaynak_url_wrap" style="display:none;margin-top:10px">
+        <label for="mevzu_kaynak_url" style="display:block;margin-bottom:4px;font-weight:600;font-size:12px">
+            <?php esc_html_e( 'Kaynak URL\'si (opsiyonel)', 'mevzu2' ); ?>
+        </label>
+        <input type="url" id="mevzu_kaynak_url" name="mevzu_kaynak_url"
+            value="" class="widefat" placeholder="https://...">
+        <p class="description" style="margin-top:4px">
+            <?php esc_html_e( 'Bu kaynak daha önce hiç kullanılmamış; isterseniz web sitesini ekleyin. Ön yüzdeki rozet buraya linklenir. Daha sonra Yazılar → Kaynaklar sayfasından değiştirebilirsiniz.', 'mevzu2' ); ?>
+        </p>
+    </div>
+
     <script>
     jQuery(function($) {
-        $('#mevzu_kaynak_input').autocomplete({
+        var $input   = $('#mevzu_kaynak_input');
+        var $urlWrap = $('#mevzu_kaynak_url_wrap');
+        var nonce    = '<?php echo esc_js( wp_create_nonce( 'mevzu_kaynak_search' ) ); ?>';
+
+        $input.autocomplete({
             minLength: 1,
             source: function(request, response) {
                 $.get(ajaxurl, {
                     action: 'mevzu_kaynak_search',
-                    nonce: '<?php echo esc_js( wp_create_nonce( 'mevzu_kaynak_search' ) ); ?>',
+                    nonce: nonce,
                     term: request.term
                 }, function(data) {
                     response(data || []);
                 });
+            },
+            select: function() {
+                // Listeden seçildiyse kesin var olan bir kaynak — kısa gecikmeyle kontrol et.
+                setTimeout(kontrolEt, 10);
             }
         });
+
+        function kontrolEt() {
+            var deger = $.trim($input.val());
+            if (deger === '') { $urlWrap.hide(); return; }
+
+            $.get(ajaxurl, {
+                action: 'mevzu_kaynak_search',
+                nonce: nonce,
+                term: deger
+            }, function(data) {
+                var varOlan = Array.isArray(data) && data.indexOf(deger) !== -1;
+                varOlan ? $urlWrap.hide() : $urlWrap.show();
+            });
+        }
+
+        $input.on('blur', kontrolEt);
     });
     </script>
     <?php
@@ -142,8 +187,22 @@ function mevzu_kaynak_save_meta_box( $post_id ) {
     $deger = isset( $_POST['mevzu_kaynak'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['mevzu_kaynak'] ) ) ) : '';
 
     if ( $deger !== '' ) {
+        // Term daha önce var mıydı? URL yalnızca YENİ bir kaynak için kaydedilir —
+        // wp_set_object_terms çağrısından ÖNCE bakılmalı, çünkü o çağrı term'i oluşturur.
+        $onceden_vardi = (bool) term_exists( $deger, 'kaynak' );
+
         // false = mevcut term'lerin yerine geçer, tek kaynak garantisi burada sağlanır.
         wp_set_object_terms( $post_id, $deger, 'kaynak', false );
+
+        if ( ! $onceden_vardi ) {
+            $url = isset( $_POST['mevzu_kaynak_url'] ) ? esc_url_raw( trim( wp_unslash( $_POST['mevzu_kaynak_url'] ) ) ) : '';
+            if ( $url !== '' ) {
+                $term = get_term_by( 'name', $deger, 'kaynak' );
+                if ( $term ) {
+                    update_term_meta( $term->term_id, 'kaynak_url', $url );
+                }
+            }
+        }
     } else {
         wp_delete_object_term_relationships( $post_id, 'kaynak' );
     }
@@ -165,14 +224,67 @@ function mevzu_kaynak_the_badge( $post_id = null ) {
         return;
     }
 
-    $terim = $terimler[0];
+    $terim    = $terimler[0];
+    $dis_url  = get_term_meta( $terim->term_id, 'kaynak_url', true );
+    $dis_link = is_string( $dis_url ) && $dis_url !== '';
+    $href     = $dis_link ? $dis_url : get_term_link( $terim );
     ?>
     <div class="px-2 px-md-0 mb-3">
         <div class="d-inline-flex align-items-center gap-2 border bg-light rounded-pill py-1 px-3">
             <i class="ri-links-line opacity-50"></i>
             <span class="text-body small fw-normal"><?php esc_html_e( 'Kaynak:', 'mevzu2' ); ?></span>
-            <a href="<?php echo esc_url( get_term_link( $terim ) ); ?>" class="text-link small fw-semibold text-decoration-none"><?php echo esc_html( $terim->name ); ?></a>
+            <a href="<?php echo esc_url( $href ); ?>" class="text-link small fw-semibold text-decoration-none"
+                <?php if ( $dis_link ) : ?>target="_blank" rel="nofollow noopener"<?php endif; ?>><?php echo esc_html( $terim->name ); ?></a>
         </div>
     </div>
     <?php
 }
+
+/**
+ * "Yazılar → Kaynaklar" taksonomi yönetim ekranına URL alanı ekler.
+ * Yazı düzenleme kutusu URL'yi yalnızca YENİ kaynak eklenirken sorar;
+ * burası ise sonradan eklemek/düzeltmek için merkezi bir yer sağlar.
+ */
+function mevzu_kaynak_add_form_url_field( $taxonomy ) {
+    wp_nonce_field( 'mevzu_kaynak_term_url', 'mevzu_kaynak_term_url_nonce' );
+    ?>
+    <div class="form-field">
+        <label for="mevzu_kaynak_term_url"><?php esc_html_e( 'Kaynak URL\'si', 'mevzu2' ); ?></label>
+        <input type="url" name="mevzu_kaynak_term_url" id="mevzu_kaynak_term_url" value="" placeholder="https://...">
+        <p><?php esc_html_e( 'Opsiyonel. Ön yüzdeki kaynak rozeti buraya linklenir.', 'mevzu2' ); ?></p>
+    </div>
+    <?php
+}
+add_action( 'kaynak_add_form_fields', 'mevzu_kaynak_add_form_url_field' );
+
+function mevzu_kaynak_edit_form_url_field( $term ) {
+    wp_nonce_field( 'mevzu_kaynak_term_url', 'mevzu_kaynak_term_url_nonce' );
+    $url = get_term_meta( $term->term_id, 'kaynak_url', true );
+    ?>
+    <tr class="form-field">
+        <th scope="row"><label for="mevzu_kaynak_term_url"><?php esc_html_e( 'Kaynak URL\'si', 'mevzu2' ); ?></label></th>
+        <td>
+            <input type="url" name="mevzu_kaynak_term_url" id="mevzu_kaynak_term_url" value="<?php echo esc_attr( $url ); ?>" placeholder="https://...">
+            <p class="description"><?php esc_html_e( 'Opsiyonel. Ön yüzdeki kaynak rozeti buraya linklenir.', 'mevzu2' ); ?></p>
+        </td>
+    </tr>
+    <?php
+}
+add_action( 'kaynak_edit_form_fields', 'mevzu_kaynak_edit_form_url_field' );
+
+function mevzu_kaynak_save_term_url( $term_id ) {
+    if ( ! isset( $_POST['mevzu_kaynak_term_url_nonce'] ) ||
+         ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['mevzu_kaynak_term_url_nonce'] ) ), 'mevzu_kaynak_term_url' ) ) {
+        return;
+    }
+    if ( ! current_user_can( 'manage_categories' ) ) return;
+
+    $url = isset( $_POST['mevzu_kaynak_term_url'] ) ? esc_url_raw( trim( wp_unslash( $_POST['mevzu_kaynak_term_url'] ) ) ) : '';
+    if ( $url !== '' ) {
+        update_term_meta( $term_id, 'kaynak_url', $url );
+    } else {
+        delete_term_meta( $term_id, 'kaynak_url' );
+    }
+}
+add_action( 'created_kaynak', 'mevzu_kaynak_save_term_url' );
+add_action( 'edited_kaynak', 'mevzu_kaynak_save_term_url' );

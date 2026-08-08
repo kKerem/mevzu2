@@ -30,14 +30,20 @@ Post meta kullanmaz. Değer, `kaynak` adlı düz (hiyerarşik olmayan) bir
 taksonomiye `wp_set_object_terms()` ile yazılır — WordPress'in etiket
 mekanizmasıyla aynı alt yapı, farkı kaydetme mantığında.
 
+- `kaynak_url` — term meta (`register_term_meta`). Kaynağın web sitesi
+  adresi. Yalnızca o kaynak **ilk kez** oluşturulurken yazı düzenleme
+  ekranından, ya da sonradan Yazılar → Kaynaklar ekranından set edilir.
+
 ## Hook'lar
 
-- `add_action('init', 'mevzu_kaynak_register_taxonomy')` — taksonomiyi kaydeder
+- `add_action('init', 'mevzu_kaynak_register_taxonomy')` — taksonomiyi ve `kaynak_url` term meta'sını kaydeder
 - `add_action('init', 'mevzu_kaynak_maybe_flush_rewrite', 20)` — `/kaynak/` arşiv linkleri için tek seferlik rewrite flush
 - `add_action('add_meta_boxes', 'mevzu_kaynak_add_meta_box')` — tekli-seçim kutusunu ekler
 - `add_action('admin_enqueue_scripts', 'mevzu_kaynak_admin_scripts')` — `jquery-ui-autocomplete` kaydını yükler
-- `add_action('wp_ajax_mevzu_kaynak_search', 'mevzu_kaynak_ajax_search')` — otomatik tamamlama sorgusu
+- `add_action('wp_ajax_mevzu_kaynak_search', 'mevzu_kaynak_ajax_search')` — otomatik tamamlama sorgusu ve "bu kaynak var mı" kontrolü (JS aynı endpoint'i kullanır)
 - `add_action('save_post_post', 'mevzu_kaynak_save_meta_box')` — kaydetme; yalnızca `post` tipinde çalışır
+- `add_action('kaynak_add_form_fields', ...)` / `add_action('kaynak_edit_form_fields', ...)` — Yazılar → Kaynaklar ekranında URL alanı
+- `add_action('created_kaynak', ...)` / `add_action('edited_kaynak', ...)` — o ekrandan URL kaydı
 
 ## Bilinen tuzaklar
 
@@ -56,8 +62,18 @@ mekanizmasıyla aynı alt yapı, farkı kaydetme mantığında.
   `karabük belediyesi`) ayrı term'ler oluşturur — büyük/küçük harf
   duyarsız eşleştirme yapılmıyor.
 - Ön yüzde `mevzu_kaynak_the_badge()` ile "Kaynak: X" rozeti gösterilir
-  (dört tekil şablonda, içerikten hemen sonra). Rozet linki `/kaynak/{slug}/`
-  taksonomi arşivine gider (kayıtta `public => true` olduğu için çalışır).
+  (dört tekil şablonda, içerikten hemen sonra). Kaynağın `kaynak_url` term
+  meta'sı doluysa rozet o dış adrese (`target="_blank" rel="nofollow noopener"`)
+  linklenir; boşsa `/kaynak/{slug}/` iç taksonomi arşivine döner.
+- URL alanı yalnızca **yeni** bir kaynak yazılırken görünür — mevcut bir
+  kaynağın adı tekrar girildiğinde (otomatik tamamlamadan seçilse de,
+  elle aynı isim yazılsa da) URL alanı gizlenir ve gönderilse bile
+  `mevzu_kaynak_save_meta_box()` içindeki `$onceden_vardi` kontrolü
+  mevcut kaynağın URL'sinin üzerine yazılmasını engeller.
+- "Yeni mi?" tespiti istemci tarafında `mevzu_kaynak_ajax_search`
+  sonucundaki isimler arasında **tam** eşleşme aranarak yapılır (JS
+  `indexOf`). `name__like` SQL `LIKE` kullandığı için alt dize eşleşmeleri
+  de dönebilir; tam eşleşme kontrolü bu yüzden gerekli.
 
 ## Bağlantılı
 

@@ -16,6 +16,12 @@ Kategoriler: **Eklendi**, **Değiştirildi**, **Düzeltildi**, **Kaldırıldı**
   tek bir kaynak atanabilir (ör. "Karabük Belediyesi"). Düzenleme ekranında
   ana sütunda gösterilir; kaynak atanmışsa tüm tekil haber şablonlarında
   içerikten hemen sonra "Kaynak: X" rozeti olarak da görünür.
+- Kaynak alanına, yalnızca **daha önce hiç eklenmemiş yeni bir kaynak**
+  girildiğinde ek bir URL alanı çıkar. Girilirse kaynağın web sitesi
+  adresi kaydedilir ve ön yüzdeki rozet oraya linklenir; mevcut bir
+  kaynak yeniden kullanıldığında URL alanı görünmez ve eski URL
+  değiştirilmez. URL'ler sonradan Yazılar → Kaynaklar ekranından da
+  eklenip düzeltilebilir.
 
 ### Düzeltildi
 
