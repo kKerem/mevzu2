@@ -55,7 +55,7 @@ function mevzu_kaynak_add_meta_box() {
         __( 'Kaynak', 'mevzu2' ),
         'mevzu_kaynak_render_meta_box',
         'post',
-        'side',
+        'normal',
         'default'
     );
 }
