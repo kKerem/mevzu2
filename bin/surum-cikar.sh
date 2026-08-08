@@ -64,13 +64,21 @@ cp inc/config-keys.php "$STAGE/mevzu2/inc/config-keys.php"
 rm -rf "$STAGE"
 
 echo "== 6/7 Paket doğrulanıyor =="
-YASAK="$(unzip -l "$ZIP" | grep -oE "mevzu2/(docs|graphify-out|mevzu2-wp|tests|bin|\.superpowers|\.claude|\.git)/" | sort -u)"
+# unzip -l çıktısı ÖNCE tamamen bir değişkene alınır, sonra üzerinde grep
+# çalıştırılır. Doğrudan `unzip -l | grep -q` borusu kullanılırsa, grep -q
+# ilk eşleşmeyi bulunca boruyu erken kapatır; unzip büyük çıktı üretirken
+# (binlerce dosya) bu SIGPIPE alıp sıfırdan farklı çıkış koduyla bitebilir,
+# pipefail de bunu YANLIŞLIKLA "bulunamadı" sayar — grep doğru cevabı
+# vermiş olsa bile. Bu, v1.3.8 ve v1.3.9 yayınlarında gerçekten yaşandı ve
+# zip'in içeriği her seferinde doğruydu; sorun yalnızca bu borudaydı.
+ZIP_LISTESI="$(unzip -l "$ZIP")"
+YASAK="$(grep -oE "mevzu2/(docs|graphify-out|mevzu2-wp|tests|bin|\.superpowers|\.claude|\.git)/" <<< "$ZIP_LISTESI" | sort -u)"
 if [ -n "$YASAK" ]; then
   echo "HATA: zip'te olmaması gereken klasör(ler) var:" >&2
   printf '%s\n' "$YASAK" | sed 's/^/    /' >&2
   exit 1
 fi
-unzip -l "$ZIP" | grep -q "mevzu2/inc/config-keys.php" \
+grep -q "mevzu2/inc/config-keys.php" <<< "$ZIP_LISTESI" \
   || { echo "HATA: zip'te config-keys.php yok." >&2; exit 1; }
 echo "Paket hazır: $ZIP ($(du -h "$ZIP" | cut -f1))"
 
