@@ -149,3 +149,30 @@ function mevzu_kaynak_save_meta_box( $post_id ) {
     }
 }
 add_action( 'save_post_post', 'mevzu_kaynak_save_meta_box' );
+
+/**
+ * Ön yüzde "Kaynak: X" rozetini basar. Kaynak atanmamışsa hiçbir şey yazmaz.
+ * Tüm tekil haber şablonlarında içerikten hemen sonra çağrılır.
+ */
+function mevzu_kaynak_the_badge( $post_id = null ) {
+    $post_id = $post_id ? (int) $post_id : get_the_ID();
+    if ( ! $post_id || get_post_type( $post_id ) !== 'post' ) {
+        return;
+    }
+
+    $terimler = get_the_terms( $post_id, 'kaynak' );
+    if ( empty( $terimler ) || is_wp_error( $terimler ) ) {
+        return;
+    }
+
+    $terim = $terimler[0];
+    ?>
+    <div class="px-2 px-md-0 mb-3">
+        <div class="d-inline-flex align-items-center gap-2 border bg-light rounded-pill py-1 px-3">
+            <i class="ri-links-line opacity-50"></i>
+            <span class="text-body small fw-normal"><?php esc_html_e( 'Kaynak:', 'mevzu2' ); ?></span>
+            <a href="<?php echo esc_url( get_term_link( $terim ) ); ?>" class="text-link small fw-semibold text-decoration-none"><?php echo esc_html( $terim->name ); ?></a>
+        </div>
+    </div>
+    <?php
+}

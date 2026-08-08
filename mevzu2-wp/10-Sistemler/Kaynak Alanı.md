@@ -14,8 +14,15 @@ kaynak atanabilir. Örnek: "Karabük Belediyesi".
 
 ## İlgili dosyalar
 
-- `inc/kaynak.php` — taksonomi kaydı, metabox, kaydetme, AJAX arama (tamamı burada)
+- `inc/kaynak.php` — taksonomi kaydı, metabox, kaydetme, AJAX arama, ön yüz rozeti (tamamı burada)
 - `functions.php:10` — dosyanın include edildiği yer
+- `sablon/sablon-single-1.php`, `sablon-single-2.php`, `sablon-single-sade.php`,
+  `sablon-koseyazisi.php` — dört ulaşılabilir tekil haber şablonunun tamamında
+  içerikten hemen sonra `mevzu_kaynak_the_badge()` çağrılır. Kaynak
+  atanmamışsa fonksiyon hiçbir şey basmaz.
+- `sablon-single-3.php` bilinçli olarak dışarıda bırakıldı — `mevzu_load_single_haber_template()`
+  dispatch'inde hiçbir case ona yönlenmiyor (ölü dosya, `options_sablon` değeri
+  '3' iken `init` sırasında otomatik 'sade'ye taşınıyor).
 
 ## Meta anahtarları
 
@@ -48,7 +55,9 @@ mekanizmasıyla aynı alt yapı, farkı kaydetme mantığında.
 - Aynı kaynağın farklı büyük/küçük harfle girilmesi (`Karabük Belediyesi` /
   `karabük belediyesi`) ayrı term'ler oluşturur — büyük/küçük harf
   duyarsız eşleştirme yapılmıyor.
-- Ön yüzde gösterim yoktur (kasıtlı, istenmedi) — yalnızca admin tarafı.
+- Ön yüzde `mevzu_kaynak_the_badge()` ile "Kaynak: X" rozeti gösterilir
+  (dört tekil şablonda, içerikten hemen sonra). Rozet linki `/kaynak/{slug}/`
+  taksonomi arşivine gider (kayıtta `public => true` olduğu için çalışır).
 
 ## Bağlantılı
 

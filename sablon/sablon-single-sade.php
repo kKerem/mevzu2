@@ -119,6 +119,8 @@ $show_tts           = function_exists( 'mevzu_tts_post_can_display' ) && mevzu_t
             ?>
         </div>
 
+        <?php if ( function_exists( 'mevzu_kaynak_the_badge' ) ) mevzu_kaynak_the_badge(); ?>
+
         <?php
         if ( function_exists( 'mevzu_render_embed_block' ) ) {
             mevzu_render_embed_block( get_the_ID() );

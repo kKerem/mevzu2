@@ -130,6 +130,8 @@ $show_meta_strip = $show_tarih || $show_okunma || $show_sure || $show_actions;
                         echo apply_filters( 'the_content', $content );
                         ?>
                     </div>
+
+                    <?php if ( function_exists( 'mevzu_kaynak_the_badge' ) ) mevzu_kaynak_the_badge(); ?>
                 </div>
             </div>
         </div>

@@ -13,7 +13,9 @@ Kategoriler: **Eklendi**, **Değiştirildi**, **Düzeltildi**, **Kaldırıldı**
 - Haberlere (`post`) tekil, yeniden kullanılabilir bir `Kaynak` alanı
   eklendi. Etiketler gibi çalışır — önceden girilen bir kaynak yazılmaya
   başlanınca otomatik tamamlama ile önerilir — ancak bir yazıya yalnızca
-  tek bir kaynak atanabilir (ör. "Karabük Belediyesi").
+  tek bir kaynak atanabilir (ör. "Karabük Belediyesi"). Düzenleme ekranında
+  ana sütunda gösterilir; kaynak atanmışsa tüm tekil haber şablonlarında
+  içerikten hemen sonra "Kaynak: X" rozeti olarak da görünür.
 
 ### Düzeltildi
 

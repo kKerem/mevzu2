@@ -142,6 +142,8 @@ $show_sure   = in_array( 'sure', $detaylar, true );
                 ?>
             </div>
 
+            <?php if ( function_exists( 'mevzu_kaynak_the_badge' ) ) mevzu_kaynak_the_badge(); ?>
+
             <?php
             if ( function_exists( 'mevzu_render_embed_url_only' ) ) {
                 mevzu_render_embed_url_only( get_the_ID() );
